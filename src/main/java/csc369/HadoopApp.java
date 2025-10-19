@@ -56,6 +56,98 @@ public class HadoopApp {
 	    job.setOutputValueClass(AccessLog.OUTPUT_VALUE_CLASS);
 	    FileInputFormat.addInputPath(job, new Path(otherArgs[1]));
 	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[2]));
+	} else if ("CountryCount".equalsIgnoreCase(otherArgs[0])) {
+
+	    MultipleInputs.addInputPath(job, new Path(otherArgs[1]),
+					TextInputFormat.class, CountryCount.LogMapper.class );
+	    MultipleInputs.addInputPath(job, new Path(otherArgs[2]),
+					TextInputFormat.class, CountryCount.CountryMapper.class ); 
+
+	    job.setReducerClass(CountryCount.JoinReducer.class);
+		job.setMapOutputKeyClass(Text.class);
+    	job.setMapOutputValueClass(Text.class);
+
+	    job.setOutputKeyClass(CountryCount.OUTPUT_KEY_CLASS);
+	    job.setOutputValueClass(CountryCount.OUTPUT_VALUE_CLASS);
+	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[3]));
+
+	} else if ("CountrySum".equalsIgnoreCase(otherArgs[0])) {
+	    job.setReducerClass(CountrySum.ReducerImpl.class);
+	    job.setMapperClass(CountrySum.MapperImpl.class);
+		job.setMapOutputKeyClass(Text.class);
+		job.setMapOutputValueClass(IntWritable.class);
+	    job.setOutputKeyClass(CountrySum.OUTPUT_KEY_CLASS);
+	    job.setOutputValueClass(CountrySum.OUTPUT_VALUE_CLASS);
+	    FileInputFormat.addInputPath(job, new Path(otherArgs[1]));
+	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[2]));
+	} else if ("CountrySort".equalsIgnoreCase(otherArgs[0])) {
+	    job.setReducerClass(CountrySort.ReducerImpl.class);
+	    job.setMapperClass(CountrySort.MapperImpl.class);
+		job.setMapOutputKeyClass(IntWritable.class);
+    	job.setMapOutputValueClass(Text.class); 
+		job.setSortComparatorClass(CountrySort.SortComparator.class);
+	    job.setOutputKeyClass(CountrySort.OUTPUT_KEY_CLASS);
+	    job.setOutputValueClass(CountrySort.OUTPUT_VALUE_CLASS);
+	    FileInputFormat.addInputPath(job, new Path(otherArgs[1]));
+	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[2]));
+	} else if ("URLCount".equalsIgnoreCase(otherArgs[0])) {
+	    MultipleInputs.addInputPath(job, new Path(otherArgs[1]),
+					TextInputFormat.class, URLCount.LogMapper.class );
+	    MultipleInputs.addInputPath(job, new Path(otherArgs[2]),
+					TextInputFormat.class, URLCount.CountryMapper.class ); 
+
+	    job.setReducerClass(URLCount.JoinReducer.class);
+		job.setMapOutputKeyClass(Text.class);
+    	job.setMapOutputValueClass(Text.class);
+
+	    job.setOutputKeyClass(URLCount.OUTPUT_KEY_CLASS);
+	    job.setOutputValueClass(URLCount.OUTPUT_VALUE_CLASS);
+	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[3]));
+	} else if ("URLCount2".equalsIgnoreCase(otherArgs[0])) {
+	    job.setReducerClass(URLCount2.ReducerImpl.class);
+	    job.setMapperClass(URLCount2.MapperImpl.class);
+	    job.setOutputKeyClass(URLCount2.OUTPUT_KEY_CLASS);
+	    job.setOutputValueClass(URLCount2.OUTPUT_VALUE_CLASS);
+	    FileInputFormat.addInputPath(job, new Path(otherArgs[1]));
+	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[2]));
+	} else if ("URLCountSort".equalsIgnoreCase(otherArgs[0])) {
+	    job.setReducerClass(URLCountSort.ReducerImpl.class);
+	    job.setMapperClass(URLCountSort.MapperImpl.class);
+	    job.setOutputKeyClass(URLCountSort.OUTPUT_KEY_CLASS);
+	    job.setOutputValueClass(URLCountSort.OUTPUT_VALUE_CLASS);
+		job.setMapOutputKeyClass(CountryCountPair.class);
+    	job.setMapOutputValueClass(Text.class);
+	    FileInputFormat.addInputPath(job, new Path(otherArgs[1]));
+	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[2]));
+	} else if ("Part3_1".equalsIgnoreCase(otherArgs[0])) {
+
+	    MultipleInputs.addInputPath(job, new Path(otherArgs[1]),
+					TextInputFormat.class, Part3_1.LogMapper.class );
+	    MultipleInputs.addInputPath(job, new Path(otherArgs[2]),
+					TextInputFormat.class, Part3_1.CountryMapper.class ); 
+
+	    job.setReducerClass(Part3_1.JoinReducer.class);
+
+		job.setMapOutputKeyClass(Text.class);
+    	job.setMapOutputValueClass(Text.class);
+
+	    job.setOutputKeyClass(Part3_1.OUTPUT_KEY_CLASS);
+	    job.setOutputValueClass(Part3_1.OUTPUT_VALUE_CLASS);
+	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[3]));
+	} else if ("Part3_2".equalsIgnoreCase(otherArgs[0])) {
+	    job.setReducerClass(Part3_2.ReducerImpl.class);
+	    job.setMapperClass(Part3_2.MapperImpl.class);
+
+	    job.setOutputKeyClass(Part3_2.OUTPUT_KEY_CLASS);
+	    job.setOutputValueClass(Part3_2.OUTPUT_VALUE_CLASS);
+
+		job.setGroupingComparatorClass(Part3_2.GroupingComparator.class);
+
+		job.setMapOutputKeyClass(URLCountryPair.class);
+    	job.setMapOutputValueClass(Text.class);
+
+	    FileInputFormat.addInputPath(job, new Path(otherArgs[1]));
+	    FileOutputFormat.setOutputPath(job, new Path(otherArgs[2]));
 	} else {
 	    System.out.println("Unrecognized job: " + otherArgs[0]);
 	    System.exit(-1);
